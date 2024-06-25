@@ -2,6 +2,7 @@ package com.example.banking.service;
 
 import com.example.banking.model.Account;
 import com.example.banking.repository.AccountRepository;
+import jakarta.servlet.http.PushBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +35,11 @@ public class AccountService {
 
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    public void deposit(Long id, double amount) {
+        Account accountExisting = findById(id);
+        accountExisting.setBalance(accountExisting.getBalance() + amount);
+        save(accountExisting);
     }
 }

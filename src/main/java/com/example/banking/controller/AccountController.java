@@ -1,8 +1,10 @@
 package com.example.banking.controller;
 
+import com.example.banking.controller.dto.DepositDto;
 import com.example.banking.model.Account;
 import com.example.banking.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +26,10 @@ public class AccountController {
     }
 
     @PostMapping
-    public Account createAnccount(@RequestBody Account account) {
-        return service.save(account);
+    public ResponseEntity<Account> createAnccount(@RequestBody Account account) {
+        Account createdAccount = service.save(account);
+
+        return ResponseEntity.status(201).body(createdAccount);
     }
 
     @PutMapping("/{id}")
@@ -37,4 +41,17 @@ public class AccountController {
     public void deleteAnccountById(@PathVariable Long id) {
         service.delete(id);
     }
+
+    @PostMapping("/deposit/{id}")
+    public ResponseEntity<String> deposit(@PathVariable Long id, @RequestBody DepositDto depositDto) {
+        Account account = service.findById(id);
+
+        if(account == null) {
+            return ResponseEntity.notFound().build();
+        }
+        service.deposit(id, depositDto.getAmount());
+
+        String responsTxt = "Deposited successfully";
+        return ResponseEntity.ok(responsTxt);
+   }
 }
