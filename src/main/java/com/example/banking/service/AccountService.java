@@ -42,4 +42,17 @@ public class AccountService {
         accountExisting.setBalance(accountExisting.getBalance() + amount);
         save(accountExisting);
     }
+
+    public String withdrawl(Long id, double amount) {
+        Account accountExisting = findById(id);
+        if (accountExisting.getBalance() - amount >= 0) {
+            accountExisting.setBalance(accountExisting.getBalance() - amount);
+            save(accountExisting);
+            return "Account withdrawl successful";
+        }
+        else {
+            return "Account withdrawl failed";
+        }
+
+    }
 }

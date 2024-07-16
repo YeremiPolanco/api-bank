@@ -1,6 +1,6 @@
 package com.example.banking.controller;
 
-import com.example.banking.controller.dto.DepositDto;
+import com.example.banking.controller.dto.AmountDto;
 import com.example.banking.model.Account;
 import com.example.banking.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +43,7 @@ public class AccountController {
     }
 
     @PostMapping("/deposit/{id}")
-    public ResponseEntity<String> deposit(@PathVariable Long id, @RequestBody DepositDto depositDto) {
+    public ResponseEntity<String> deposit(@PathVariable Long id, @RequestBody AmountDto depositDto) {
         Account account = service.findById(id);
 
         if(account == null) {
@@ -54,4 +54,13 @@ public class AccountController {
         String responsTxt = "Deposited successfully";
         return ResponseEntity.ok(responsTxt);
    }
+
+    @PostMapping("/withdrawal/{id}")
+    public ResponseEntity<String> withdrawal(@PathVariable Long id, @RequestBody AmountDto withdrawalDto) {
+        Account account = service.findById(id);
+        if(account == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(service.withdrawl(id, withdrawalDto.getAmount()));
+    }
 }
