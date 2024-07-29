@@ -53,7 +53,7 @@ public class AccountController {
 
         String responsTxt = "Deposited successfully";
         return ResponseEntity.ok(responsTxt);
-   }
+   }    
 
     @PostMapping("/withdrawal/{id}")
     public ResponseEntity<String> withdrawal(@PathVariable Long id, @RequestBody AmountDto withdrawalDto) {
